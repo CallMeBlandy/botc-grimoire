@@ -1,0 +1,11 @@
+# Render.com blueprint — deploys the grimoire as a free always-available web
+# service. The build fetches character data + icons, then bundles the client;
+# the Node server serves it and hosts the WebSocket on the same port.
+services:
+  - type: web
+    name: botc-grimoire
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run fetch-roles && npm run build
+    startCommand: npm run start
+    autoDeploy: true
