@@ -232,11 +232,29 @@ function HostGame({
     });
   }
 
+  // Push a read-only grimoire to the acting player's phone (Spy/Widow).
+  function pushGrimoire() {
+    const step = currentNightStep;
+    if (!step || !step.seatIds.length) return;
+    act({
+      kind: "openPrompt",
+      prompt: {
+        seatId: step.seatIds[0],
+        kind: "grimoire",
+        title: "The Grimoire",
+        body: "Study the board — take in what you can, then tap Done.",
+        showToPlayer: true,
+      },
+    });
+  }
+
   const nightWhich = s.phase.type === "night" && s.phase.count > 1 ? "other" : "first";
   const dialogRole = currentNightStep?.role;
   const rawAction = dialogRole ? NIGHT_ACTIONS[dialogRole.id] : undefined;
   const dialogAction =
     rawAction && (!rawAction.when || rawAction.when === nightWhich) ? rawAction : undefined;
+  const GRIMOIRE_VIEWERS = new Set(["spy", "widow"]);
+  const grimoireRole = !!dialogRole && GRIMOIRE_VIEWERS.has(dialogRole.id);
 
   const win = computeWin(s, byId);
   const showWin = win && winDismissed !== win.reason && !s.announcement;
@@ -386,6 +404,8 @@ function HostGame({
           actionable={s.phase.type === "night" && !!dialogAction}
           onOpenAction={openNightDialog}
           onPushInstruction={pushInstruction}
+          grimoireRole={s.phase.type === "night" && grimoireRole}
+          onShowGrimoire={pushGrimoire}
         />
         {s.nomination && <NominationBar state={s} byId={byId} act={act} />}
         <button className="ghost" onClick={() => act({ kind: "addSeat" })}>
@@ -601,14 +621,21 @@ function SeatPanel({
 
       {(shownHint || shownRole) && (
         <div className={`shown-row ${shownHint && !shownRole ? "shown-row--todo" : ""}`}>
-          <span>
-            🎭 Player sees:{" "}
-            <b>{shownRole ? shownRole.name : "not set"}</b>
-            {shownHint && <span className="muted small"> — {shownHint.note}</span>}
-          </span>
-          <button className="pbtn" onClick={onShownAs}>
-            {shownRole ? "Change" : "Set shown role"}
-          </button>
+          <div className="shown-row__head">
+            <span>
+              🎭 Player sees: <b>{shownRole ? shownRole.name : "not set"}</b>
+            </span>
+            <button className="pbtn" onClick={onShownAs}>
+              {shownRole ? "Change" : "Set shown role"}
+            </button>
+          </div>
+          {shownHint && <p className="muted small">{shownHint.note}</p>}
+          {shownRole && (
+            <p className="shown-row__ability">
+              <b>Keep up the act — they think they can: </b>
+              {shownRole.ability}
+            </p>
+          )}
         </div>
       )}
 

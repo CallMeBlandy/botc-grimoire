@@ -203,9 +203,19 @@ label { display: block; margin: 0.7em 0; font-size: 0.85rem; color: var(--muted)
 }
 .hseat__shownas { font-size: 0.62rem; color: #d9c4ff; background: #3a2760; padding: 0.05em 0.4em; border-radius: 6px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hseat__reminders { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; }
-.shown-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; background: #2b1d47; border: 1px solid var(--traveler); border-radius: 10px; padding: 0.5em 0.7em; margin-top: 0.5rem; font-size: 0.85rem; }
+.shown-row { display: flex; flex-direction: column; gap: 0.35rem; background: #2b1d47; border: 1px solid var(--traveler); border-radius: 10px; padding: 0.5em 0.7em; margin-top: 0.5rem; font-size: 0.85rem; }
 .shown-row--todo { border-style: dashed; border-color: var(--accent2); }
+.shown-row__head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 .shown-row .pbtn { flex: none; padding: 0.4em 0.8em; }
+.shown-row__ability { margin: 0; background: #0004; border-radius: 8px; padding: 0.4em 0.6em; }
+
+/* Spy/Widow grimoire pushed to a phone */
+.grim-card { max-width: 520px; }
+.grim-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; max-height: 55vh; overflow-y: auto; text-align: left; }
+.grim-item { display: flex; align-items: center; gap: 0.5rem; background: #ffffff0d; border: 1px solid var(--line); border-radius: 10px; padding: 0.4rem; }
+.grim-item.dead { opacity: 0.55; }
+.grim-item__info { display: flex; flex-direction: column; min-width: 0; }
+.grim-item__info b { font-size: 0.85rem; }
 .rem-chip {
   background: var(--accent2); color: #241a00; font-size: 0.62rem; font-weight: 700;
   padding: 0.05em 0.4em; border-radius: 6px;

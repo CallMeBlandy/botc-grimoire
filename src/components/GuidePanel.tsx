@@ -17,6 +17,8 @@ interface Props {
   actionable: boolean;
   onOpenAction: () => void;
   onPushInstruction: () => void;
+  grimoireRole: boolean;
+  onShowGrimoire: () => void;
 }
 
 // Collapsible "words to say aloud" block for the current step.
@@ -130,12 +132,19 @@ export function GuidePanel(props: Props) {
           <div className="guide__actions">
             {props.actionable && (
               <button className="pbtn primary-btn" onClick={props.onOpenAction}>
-                🎯 Resolve on screen
+                🎯 Resolve / ask player
               </button>
             )}
-            <button className="pbtn" onClick={props.onPushInstruction}>
-              📱 Show on their phone
-            </button>
+            {props.grimoireRole && (
+              <button className="pbtn primary-btn" onClick={props.onShowGrimoire}>
+                📱 Show grimoire on phone
+              </button>
+            )}
+            {!props.actionable && !props.grimoireRole && (
+              <button className="pbtn" onClick={props.onPushInstruction}>
+                📱 Show on their phone
+              </button>
+            )}
           </div>
         )}
         {(skipped.length > 0 || showDead) && (

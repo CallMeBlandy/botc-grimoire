@@ -62,7 +62,15 @@ export interface DayState {
   noExecution: boolean;
 }
 
-export type PromptKind = "choose" | "info" | "confirm";
+export type PromptKind = "choose" | "info" | "confirm" | "grimoire";
+
+export interface GrimoireSeatView {
+  index: number;
+  name: string;
+  characterId: string | null;
+  alive: boolean;
+  reminders: string[];
+}
 
 // The full prompt as the host sees it (with the player's response).
 export interface HostPrompt {
@@ -88,6 +96,7 @@ export interface PlayerPrompt {
   max: number;
   candidates: { id: string; name: string }[];
   responded: boolean;
+  grimoire?: GrimoireSeatView[];
 }
 
 export interface HostState {

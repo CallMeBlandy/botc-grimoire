@@ -148,6 +148,20 @@ async function main() {
   await wait(120);
   check(playerState?.announcement === null, "announcement clears on players");
 
+  // Grimoire prompt (Spy): the whole board is pushed to that player's phone.
+  send(host, {
+    type: "host:action",
+    action: { kind: "openPrompt", prompt: { seatId, kind: "grimoire", title: "The Grimoire", body: "look", showToPlayer: true } },
+  });
+  await wait(150);
+  check(playerState?.prompt?.kind === "grimoire", "grimoire prompt reaches the player");
+  check(
+    Array.isArray(playerState?.prompt?.grimoire) &&
+      playerState.prompt.grimoire.length === hostState.seats.length,
+    "grimoire lists every seat",
+  );
+  check(playerState?.prompt?.grimoire?.[0]?.characterId === "imp", "grimoire reveals true roles to the Spy");
+
   host.close();
   player.close();
   await wait(100);

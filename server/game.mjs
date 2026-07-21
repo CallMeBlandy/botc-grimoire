@@ -504,6 +504,18 @@ export function playerView(room, seatId) {
               })
               .filter(Boolean),
             responded: !!room.prompt.response,
+            // For a 'grimoire' prompt (Spy/Widow), include the true board so the
+            // player can study it on their own phone.
+            grimoire:
+              room.prompt.kind === "grimoire"
+                ? room.seats.map((s, i) => ({
+                    index: i,
+                    name: s.name,
+                    characterId: s.characterId,
+                    alive: s.alive,
+                    reminders: s.reminders.map((r) => r.label),
+                  }))
+                : undefined,
           }
         : null,
     announcement: room.announcement ?? null,

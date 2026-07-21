@@ -1,16 +1,50 @@
 import { useState } from "react";
-import type { PlayerPrompt as Prompt } from "../types";
+import type { PlayerPrompt as Prompt, Role } from "../types";
+import { Token } from "./Token";
 
 interface Props {
   prompt: Prompt;
+  byId: Map<string, Role>;
   onRespond: (r: { seatIds?: string[]; value?: boolean | null }) => void;
 }
 
 // Full-screen instruction the Storyteller pushed to this player's phone — so
 // there's no need to mime or whisper. Info prompts just show text; choose/
 // confirm prompts collect the player's answer and send it back.
-export function PlayerPrompt({ prompt, onRespond }: Props) {
+export function PlayerPrompt({ prompt, byId, onRespond }: Props) {
   const [picked, setPicked] = useState<string[]>([]);
+
+  // Spy/Widow: a read-only view of the whole grimoire.
+  if (prompt.kind === "grimoire") {
+    return (
+      <div className="prompt-overlay">
+        <div className="prompt-card grim-card">
+          <div className="prompt-title">{prompt.title || "The Grimoire"}</div>
+          {prompt.body && <p className="prompt-body">{prompt.body}</p>}
+          <div className="grim-list">
+            {(prompt.grimoire ?? []).map((seat) => {
+              const role = seat.characterId ? byId.get(seat.characterId) : null;
+              return (
+                <div key={seat.index} className={`grim-item ${seat.alive ? "" : "dead"}`}>
+                  <Token role={role} size={44} dead={!seat.alive} faded={!role} />
+                  <div className="grim-item__info">
+                    <b>{seat.name}</b>
+                    <span className="muted small">{role ? role.name : "—"}</span>
+                    {seat.reminders.length > 0 && (
+                      <span className="muted small">{seat.reminders.join(", ")}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <button className="primary big" onClick={() => onRespond({ value: true })}>
+            Done
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (prompt.responded) {
     return (

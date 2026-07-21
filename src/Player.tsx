@@ -36,7 +36,7 @@ export function Player({ roomId, code }: { roomId: string; code: string }) {
 
   return (
     <>
-      {s.prompt && <PlayerPrompt prompt={s.prompt} onRespond={sendPromptResponse} />}
+      {s.prompt && <PlayerPrompt prompt={s.prompt} byId={byId} onRespond={sendPromptResponse} />}
       {s.announcement && (
         <div className="prompt-overlay">
           <div className="prompt-card">
