@@ -310,6 +310,13 @@ label { display: block; margin: 0.7em 0; font-size: 0.85rem; color: var(--muted)
 .guide__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
 .guide__phase { font-weight: 800; letter-spacing: 0.04em; }
 .guide__count { font-size: 0.78rem; color: var(--muted); }
+.guide__bar { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.1rem 0; user-select: none; }
+.guide__bar .guide__count { flex: 1; text-align: right; }
+.guide__grip { width: 34px; height: 5px; border-radius: 3px; background: #ffffff33; flex: none; }
+.guide__chevron { font-size: 0.7rem; color: var(--muted); flex: none; }
+.guide__content { animation: guideOpen 0.18s ease; }
+@keyframes guideOpen { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.guide--collapsed { padding-top: 0.4rem; }
 .guide__body { min-height: 3.2em; }
 .guide__title { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.15rem; }
 .guide__text { font-size: 0.95rem; line-height: 1.35; }
@@ -341,6 +348,15 @@ label { display: block; margin: 0.7em 0; font-size: 0.85rem; color: var(--muted)
 .night-dialog__actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .night-dialog__actions .pbtn { flex: 1; min-width: 45%; }
 .answered { font-size: 1.05rem; }
+
+/* full-screen "show a player" enlarged token */
+.show-overlay {
+  position: fixed; inset: 0; z-index: 95; padding: 1.5rem; text-align: center;
+  background: radial-gradient(800px 600px at 50% 25%, #2a1c42 0%, #0a0716 80%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem;
+}
+.show-overlay h2 { font-size: 2rem; margin: 0.3rem 0 0; }
+.show-ability { font-size: 1.1rem; max-width: 520px; line-height: 1.4; }
 
 /* full-screen player prompt */
 .prompt-overlay {

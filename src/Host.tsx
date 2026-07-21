@@ -19,6 +19,7 @@ import { JoinModal } from "./components/JoinModal";
 import { NightOrderPanel } from "./components/NightOrderPanel";
 import { GuidePanel } from "./components/GuidePanel";
 import { NightActionDialog } from "./components/NightActionDialog";
+import { ReferenceModal } from "./components/ReferenceModal";
 
 type Modal =
   | { kind: "none" }
@@ -27,7 +28,8 @@ type Modal =
   | { kind: "bluff"; index: number }
   | { kind: "reminder"; seatId: string }
   | { kind: "join" }
-  | { kind: "night" };
+  | { kind: "night" }
+  | { kind: "reference" };
 
 export function Host({ onExit }: { onExit: () => void }) {
   const creds = loadHostCreds();
@@ -261,6 +263,9 @@ function HostGame({
           <button className="chip" onClick={() => setModal({ kind: "night" })}>
             ☾ Night order
           </button>
+          <button className="chip" onClick={() => setModal({ kind: "reference" })}>
+            🎭 All roles
+          </button>
           <HostMenu
             onReset={() => {
               if (confirm("Reset the game? Characters, life and reminders clear. Players keep their seats."))
@@ -461,6 +466,10 @@ function HostGame({
 
       {modal.kind === "night" && (
         <NightOrderPanel inPlay={inPlayRoles} onClose={() => setModal({ kind: "none" })} />
+      )}
+
+      {modal.kind === "reference" && (
+        <ReferenceModal roles={editionRoles} onClose={() => setModal({ kind: "none" })} />
       )}
 
       {nightDialogOpen && dialogRole && dialogAction && currentNightStep && (
